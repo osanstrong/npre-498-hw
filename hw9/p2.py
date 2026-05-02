@@ -27,7 +27,7 @@ for beta in beta_vals:
         init_coverage - sum(r[:i+1])*h for i in range(len(r))
     ])
     init_covs.append(init_coverage)
-    print(f"Initial coverage: {init_coverage}")
+    # print(f"Initial coverage: {init_coverage}")
     # plt.plot(T/beta, r, label="Release Rate over time")
     # plt.xlabel("t (s)")
     # plt.ylabel("rrate (1/s)")
@@ -40,19 +40,20 @@ for beta in beta_vals:
     imax = r.argmax()
     Tp = T[imax]
     Tp_vals.append(Tp)
+    N_EST = 2 # 2 Felt linear over the broadest range of T. As expected; D2 lol
+    N = N_EST
+    y = np.log(r / (theta**N))
+    x = 1 / T
+    plt.plot(x, y, label=f"β = {beta}")
+plt.xlabel("t (s)")
+plt.ylabel("θ (-)")
+plt.legend()
+plt.show()
+print(f"Peak Temps Tp = {Tp_vals} K")
 
-#     N_EST = 2
-#     N = N_EST
-#     y = np.log(r / (theta**N))
-#     x = 1 / T
-#     plt.plot(x, y, label=f"β = {beta}")
-# plt.xlabel("t (s)")
-# plt.ylabel("θ (-)")
-# plt.legend()
-# plt.show()
 
-x = np.log(np.array(Tp_vals) / np.array(beta_vals))
-y = 1 / np.array(Tp_vals)
+y = np.log(np.array(Tp_vals) / np.array(beta_vals))
+x = 1 / np.array(Tp_vals)
 
 res = linreg(x, y)
 m = res.slope
